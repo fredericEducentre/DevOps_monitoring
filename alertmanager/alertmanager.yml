@@ -1,0 +1,16 @@
+global:
+  smtp_smarthost: 'sandbox.smtp.mailtrap.io:587'
+  smtp_from: 'alertmanager@example.com'
+  smtp_auth_username: 'your_username'
+  smtp_auth_password: 'your_password'
+  smtp_require_tls: true
+
+route:
+  group_by: ['alertname']
+  receiver: 'email'
+
+receivers:
+  - name: 'email'
+    email_configs:
+      - to: 'it-team@example.com'
+        send_resolved: true

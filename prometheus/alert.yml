@@ -1,0 +1,11 @@
+groups:
+  - name: GC cyles more than 10
+    rules:
+      - alert: GC cycle
+        expr: go_gc_cycles_automatic_gc_cycles_total > 10 
+        for: 1m
+        labels:
+          severity: Critical
+        annotations:
+          summary: "Your summary"
+          description: "Your description"
