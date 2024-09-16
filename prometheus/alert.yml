@@ -9,3 +9,23 @@ groups:
         annotations:
           summary: "Your summary"
           description: "Your description"
+  - name: filesystem_alerts
+    rules:
+    - alert: FilesystemSpaceLow
+      expr: node_filesystem_avail_bytes{job="mac",mountpoint="/"} < 2*1024*1024*1024
+      for: 5m
+      labels:
+        severity: Critical
+      annotations:
+        summary: "Filesystem space is running low on {{ $labels.instance }}"
+        description: "The filesystem on instance {{ $labels.instance }} has less than 2GB of available space. Please take action to free up space."
+  - name: memory_alerts
+    rules:
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes{job="mac"} / node_memory_MemTotal_bytes{ job="mac"})) * 100 > 80
+        for: 1m
+        labels:
+          severity: Critical
+        annotations:
+          summary: "High Memory Usage Detected on {{ $labels.instance }}"
+          description: "Memory usage is above 80% for more than 5 minutes.\n Value: {{ $value }}%\nJob: {{ $labels.job }}>"
